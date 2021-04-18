@@ -1,21 +1,52 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import SearchStackScreen from "./screens/searchscreen/SearchStackScreen";
+import HeadlineStackScreen from "./screens/headlinescreen/HeadlineStackScreen";
+
+type AppTabParamList = {
+  SearchStack: undefined;
+  HeadlineStack: undefined;
+};
+
+const Tab = createBottomTabNavigator<AppTabParamList>();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator >
+        <Tab.Screen
+          name="SearchStack"
+          component={SearchStackScreen}
+          options={{
+            title: "Search",
+            tabBarIcon: ({ focused, size, color }) => (
+              <Ionicons
+                name={focused ? "ios-search-sharp" : "ios-search-outline"}
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="HeadlineStack"
+          component={HeadlineStackScreen}
+          options={{
+            title: "Headlines",
+            tabBarIcon: ({ focused, size, color }) => (
+              <Ionicons
+                name={focused ? "ios-newspaper-sharp" : "ios-newspaper"}
+                size={size}
+                color={color}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
