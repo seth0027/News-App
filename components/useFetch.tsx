@@ -11,11 +11,13 @@ export const useFetch = ({
   text,
   dispatch,
   queryParams,
+  pageIndex,
   endPoint,
 }: {
   text?: string;
   dispatch?: React.Dispatch<Action>;
   queryParams?: string;
+  pageIndex?: number;
   endPoint: string;
 }) => {
   useEffect(() => {
@@ -34,7 +36,7 @@ export const useFetch = ({
       cancel();
       timeOut ? clearTimeout(timeOut) : undefined;
     };
-  }, [text]);
+  }, [text, pageIndex]);
 
   const fetchNews = async (cancelToken?: CancelToken) => {
     try {
