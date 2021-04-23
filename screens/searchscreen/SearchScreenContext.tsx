@@ -1,20 +1,21 @@
 import React from "react";
-import { NewsResponse } from "../../models/Article";
+import { NewsResponse } from "../../models/NewsResponse";
+import { news } from "../../news";
 
-type SearchScreenState = {
+export type NewsState = {
   isLoading?: boolean;
   errorMessage?: string;
   newsResponse?: NewsResponse;
 };
 
-const initialState: SearchScreenState = {};
+const initialState: NewsState = {};
 
 export const SearchScreenContext = React.createContext<{
-  state: SearchScreenState;
+  state: NewsState;
   dispatch?: React.Dispatch<Action>;
 }>({ state: initialState });
 
-type Action = {
+export type Action = {
   type: ActionType;
   payload?: { result?: NewsResponse; errorMessage?: string };
 };
@@ -25,10 +26,7 @@ export enum ActionType {
   ERROR,
 }
 
-const reducer = (
-  state: SearchScreenState,
-  action: Action
-): SearchScreenState => {
+export const reducer = (state: NewsState, action: Action): NewsState => {
   switch (action.type) {
     case ActionType.LOADING:
       return { ...state, isLoading: true, errorMessage: undefined };

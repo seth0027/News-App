@@ -14,10 +14,10 @@ type AppTabParamList = {
 
 const Tab = createBottomTabNavigator<AppTabParamList>();
 
-export default function App() {
+export default () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator >
+      <Tab.Navigator>
         <Tab.Screen
           name="SearchStack"
           component={SearchStackScreen}
@@ -49,4 +49,4 @@ export default function App() {
       </Tab.Navigator>
     </NavigationContainer>
   );
-}
+};
