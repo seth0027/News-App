@@ -17,10 +17,12 @@ export const HeadlineView = ({
       justifyContent: "center",
     }}
   >
-    <View style={{ height: "10%" }} />
-    <Text style={{ margin: 20, fontSize: 35, fontStyle: "italic" }}>
-      {category}
-    </Text>
+    <View style={{ height: "8%" }} />
+    {!state.isLoading && (
+      <Text style={{ margin: 20, fontSize: 35, fontStyle: "italic" }}>
+        {category}
+      </Text>
+    )}
     <View>
       <NewsList state={state} />
     </View>

@@ -1,6 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { Button, View, Platform } from "react-native";
+import { Button, View, Platform, Text } from "react-native";
 
 import { NewsList } from "../../components/NewsList";
 import { useFetch } from "../../components/useFetch";
@@ -10,12 +10,14 @@ import { HeadlineStackParamList } from "./HeadlineStackScreen";
 import PagerView from "react-native-pager-view";
 import { HeadlineView } from "../../components/HeadlineView";
 import { capitalize } from "../../utils/strings";
+import { ScrollView } from "react-native-gesture-handler";
+import { TopRow } from "../../components/top-row/TopRow";
 
 type HeadlineProps = {
   navigation: StackNavigationProp<HeadlineStackParamList, "Headline">;
 };
 
-const newsCategories = [
+export const newsCategories = [
   "general",
   "business",
   "entertainment",
@@ -38,6 +40,7 @@ const HeadlineScreen = ({ navigation }: HeadlineProps) => {
 
   return (
     <View style={{ flex: 1, justifyContent: "flex-end" }}>
+      <TopRow index={index} setIndex={(index) => setIndex(index)} />
       <PagerView
         initialPage={index}
         style={{ flex: 1 }}
@@ -45,9 +48,12 @@ const HeadlineScreen = ({ navigation }: HeadlineProps) => {
           setIndex(event.nativeEvent.position);
         }}
       >
-        {newsCategories.map((category, index) => (
-          <View key={index}>
-            <HeadlineView state={state} category={capitalize(category)} />
+        {newsCategories.map((_category,position) => (
+          <View key={position}>
+            <HeadlineView
+              state={state}
+              category={capitalize(newsCategories[index])}
+            />
           </View>
         ))}
       </PagerView>
