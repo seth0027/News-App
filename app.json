@@ -5,11 +5,11 @@
     "slug": "news-app",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "icon": "./assets/news-icon.png",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/news-icon.png",
+      "resizeMode": "300x300",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -23,7 +23,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/news-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },

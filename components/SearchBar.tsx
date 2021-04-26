@@ -10,19 +10,18 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 export const SearchBar = ({ style }: { style?: StyleProp<ViewStyle> }) => {
-  const [text, setText] = React.useState("");
-  const { dispatch } = React.useContext(SearchScreenContext);
+  const { state, dispatch } = React.useContext(SearchScreenContext);
 
   React.useEffect(() => {
+    const search = state.searchQuery;
     const { cancel, token } = axios.CancelToken.source();
     const timeOut =
-      text.length > 0
+      search && search?.length > 0
         ? setTimeout(() => {
             dispatch?.({
-              type: ActionType.FETCH_DATA,
+              type: ActionType.FETCH_DATA_SEARCH,
               payload: {
-                endPoint: "everything",
-                queryParams: `?q=${text}`,
+                searchQuery: state.searchQuery,
                 token,
               },
             });
@@ -33,7 +32,7 @@ export const SearchBar = ({ style }: { style?: StyleProp<ViewStyle> }) => {
       cancel();
       timeOut && clearTimeout(timeOut);
     };
-  }, [text]);
+  }, [state.searchQuery]);
 
   return (
     <View style={[{ flexDirection: "row", margin: 20 }, style]}>
@@ -54,9 +53,14 @@ export const SearchBar = ({ style }: { style?: StyleProp<ViewStyle> }) => {
           borderRadius: 5,
         }}
         autoFocus
-        value={text}
+        value={state.searchQuery}
         numberOfLines={2}
-        onChangeText={(text) => setText(text)}
+        onChangeText={(text) =>
+          dispatch?.({
+            type: ActionType.SEARCH_CHANGE,
+            payload: { searchQuery: text },
+          })
+        }
         placeholder="Search News..."
       />
     </View>

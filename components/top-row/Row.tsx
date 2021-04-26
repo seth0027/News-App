@@ -1,29 +1,31 @@
 import React from "react";
 import { TouchableOpacity, Text } from "react-native";
+import {
+  ActionType,
+  SearchScreenContext,
+} from "../../screens/searchscreen/SearchScreenContext";
 import { capitalize } from "../../utils/strings";
 
-export const Row = ({
-  position,
-  item,
-  index,
-  setIndex,
-}: {
-  position: number;
-  item: string;
-  index: number;
-  setIndex: (index: number) => void;
-}) => (
-  <TouchableOpacity
-    key={position}
-    onPress={() => {
-      setIndex(position);
-    }}
-    style={{
-      backgroundColor: index == position ? "white" : "transparent",
-      marginEnd: 4,
-      borderRadius: 4,
-    }}
-  >
-    <Text style={{ fontSize: 20, margin: 8 }}>{capitalize(item)}</Text>
-  </TouchableOpacity>
-);
+export const Row = ({ position, item }: { position: number; item: string }) => {
+  const { state, dispatch } = React.useContext(SearchScreenContext);
+  const bool = state.categoryIndex == position;
+  return (
+    <TouchableOpacity
+      key={position}
+      onPress={() => {
+        dispatch?.({
+          type: ActionType.CATEGORY_INDEX_CHANGE,
+          payload: { categoryIndex: position },
+        });
+      }}
+      style={{
+        backgroundColor: bool ? "white" : "transparent",
+        marginEnd: 4,
+        borderRadius: 4,
+        elevation: bool ? 4 : 0,
+      }}
+    >
+      <Text style={{ fontSize: 20, margin: 8 }}>{capitalize(item)}</Text>
+    </TouchableOpacity>
+  );
+};

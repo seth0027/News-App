@@ -31,37 +31,40 @@ export const newsCategories = [
 ];
 
 const HeadlineScreen = ({}: HeadlineProps) => {
-  const { dispatch } = React.useContext(SearchScreenContext);
-  const [index, setIndex] = React.useState(0);
+  const { state, dispatch } = React.useContext(SearchScreenContext);
 
   React.useEffect(() => {
     const { cancel, token } = axios.CancelToken.source();
     dispatch?.({
-      type: ActionType.FETCH_DATA,
+      type: ActionType.FETCH_DATA_HEADLINE,
       payload: {
-        endPoint: "top-headlines",
-        queryParams: `?country=us&category=${newsCategories[index]}`,
+        categoryIndex: state.categoryIndex,
         token,
       },
     });
     return () => {
       cancel();
     };
-  }, [index]);
+  }, [state.categoryIndex]);
 
   return (
     <View style={{ flex: 1, justifyContent: "flex-end" }}>
-      <TopRow index={index} setIndex={(index) => setIndex(index)} />
+      <TopRow />
       <PagerView
-        initialPage={index}
+        initialPage={state.categoryIndex}
         style={{ flex: 1 }}
         onPageSelected={(event) => {
-          setIndex(event.nativeEvent.position);
+          dispatch?.({
+            type: ActionType.CATEGORY_INDEX_CHANGE,
+            payload: { categoryIndex: event.nativeEvent.position },
+          });
         }}
       >
         {newsCategories.map((_category, position) => (
           <View key={position}>
-            <HeadlineView category={capitalize(newsCategories[index])} />
+            <HeadlineView
+              category={capitalize(newsCategories[state.categoryIndex ?? 0])}
+            />
           </View>
         ))}
       </PagerView>

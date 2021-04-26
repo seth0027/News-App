@@ -6,24 +6,24 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import { newsCategories } from "../../screens/headlinescreen/HeadlineScreen";
+import { SearchScreenContext } from "../../screens/searchscreen/SearchScreenContext";
 import { capitalize } from "../../utils/strings";
 import { Row } from "./Row";
 
-export const TopRow = ({
-  index,
-  setIndex,
-}: {
-  index: number;
-  setIndex: (index: number) => void;
-}) => {
+export const TopRow = () => {
   const ref = React.useRef<FlatList<any>>(null);
+  const { state } = React.useContext(SearchScreenContext);
 
   React.useEffect(() => {
-    ref.current?.scrollToIndex({ animated: true, index });
-  }, [index]);
+    ref.current?.scrollToIndex({
+      animated: true,
+      index: state.categoryIndex ?? 0,
+    });
+  }, [state.categoryIndex]);
   return (
     <View style={{ margin: 20, marginBottom: 10 }}>
       <FlatList
+        showsHorizontalScrollIndicator={false}
         ref={(ref) => ref}
         horizontal
         data={newsCategories}
@@ -33,14 +33,7 @@ export const TopRow = ({
         }: {
           item: string;
           index: number;
-        }) => (
-          <Row
-            index={index}
-            position={position}
-            setIndex={setIndex}
-            item={item}
-          />
-        )}
+        }) => <Row position={position} item={item} />}
         keyExtractor={(_item, index) => index.toString()}
       />
     </View>

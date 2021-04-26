@@ -2,11 +2,15 @@ import axios, { CancelToken } from "axios";
 import React from "react";
 import { NewsResponse } from "../../models/NewsResponse";
 import { news } from "../../news";
+import { fetchData } from "../../utils/api";
+import { newsCategories } from "../headlinescreen/HeadlineScreen";
 
 export type NewsState = {
   isLoading?: boolean;
   errorMessage?: string;
   newsResponse?: NewsResponse;
+  searchQuery?: string;
+  categoryIndex?: number;
 };
 
 const initialState: NewsState = {};
@@ -21,9 +25,9 @@ export type Action = {
   payload?: {
     result?: NewsResponse;
     errorMessage?: string;
-    endPoint?: string;
-    queryParams?: string;
+    searchQuery?: string;
     token?: CancelToken;
+    categoryIndex?: number;
   };
 };
 
@@ -31,7 +35,10 @@ export enum ActionType {
   SUCCESS,
   LOADING,
   ERROR,
-  FETCH_DATA,
+  FETCH_DATA_SEARCH,
+  FETCH_DATA_HEADLINE,
+  SEARCH_CHANGE,
+  CATEGORY_INDEX_CHANGE,
 }
 
 export const reducer = (state: NewsState, action: Action): NewsState => {
@@ -52,6 +59,16 @@ export const reducer = (state: NewsState, action: Action): NewsState => {
         errorMessage: undefined,
         newsResponse: action.payload?.result,
       };
+    case ActionType.SEARCH_CHANGE:
+      return {
+        ...state,
+        searchQuery: action.payload?.searchQuery,
+      };
+    case ActionType.CATEGORY_INDEX_CHANGE:
+      return {
+        ...state,
+        categoryIndex: action.payload?.categoryIndex,
+      };
     default:
       return state;
   }
@@ -65,35 +82,28 @@ export const SearchScreenProvider = ({ children }: SearchProviderProps) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const customDispatch = React.useCallback(async (action: Action) => {
-    const payload = action.payload;
     switch (action.type) {
-      case ActionType.FETCH_DATA: {
-        try {
-          dispatch({ type: ActionType.LOADING });
-          let url = `https://newsapi.org/v2/${payload?.endPoint}`;
-          if (payload?.queryParams) {
-            url += payload.queryParams;
-          }
-          console.log("making a fetch request with url:", url);
-          const { data } = await axios.get<NewsResponse>(url, {
-            params: {
-              apiKey: "1563e2534ead4d60a0b768507db99f49",
-              pageSize: PAGE_SIZE,
-            },
-            cancelToken: action.payload?.token,
-          });
-
-          dispatch({ type: ActionType.SUCCESS, payload: { result: data } });
-        } catch (err: any) {
-          console.log("fetch request error occured", err);
-          if (!axios.isCancel(err)) {
-            dispatch({
-              type: ActionType.ERROR,
-              payload: { errorMessage: err.toString() },
-            });
-          }
-        }
+      case ActionType.FETCH_DATA_SEARCH: {
+        fetchData({
+          endPoint: "everything",
+          queryParams: `?q=${action.payload?.searchQuery}`,
+          cancelToken: action.payload?.token,
+          dispatch,
+        });
+        break;
       }
+      case ActionType.FETCH_DATA_HEADLINE: {
+        fetchData({
+          endPoint: "top-headlines",
+          queryParams: `?country=us&category=${
+            newsCategories[action.payload?.categoryIndex ?? 0]
+          }`,
+          cancelToken: action.payload?.token,
+          dispatch,
+        });
+        break;
+      }
+
       default:
         dispatch(action);
     }

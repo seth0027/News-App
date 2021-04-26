@@ -7,7 +7,6 @@ import {
 import { NewsList } from "./NewsList";
 
 export const HeadlineView = ({ category }: { category: string }) => {
-  const { state } = React.useContext(SearchScreenContext);
   return (
     <View
       style={{
@@ -16,12 +15,8 @@ export const HeadlineView = ({ category }: { category: string }) => {
         justifyContent: "center",
       }}
     >
-      <View style={{ height: "8%" }} />
-      {!state.isLoading && (
-        <Text style={{ margin: 20, fontSize: 35, fontStyle: "italic" }}>
-          {category}
-        </Text>
-      )}
+      <View style={{ height: "4%" }} />
+
       <View>
         <NewsList />
       </View>
