@@ -12,18 +12,13 @@ type SearchProps = {
   navigation: StackNavigationProp<SearchStackParamList, "Search">;
 };
 
-const SearchScreen = ({ navigation }: SearchProps) => {
-  const { state, dispatch } = React.useContext(SearchScreenContext);
-
+const SearchScreen = ({}: SearchProps) => {
   return (
     <View
       style={{ flex: 1, alignContent: "center", justifyContent: "flex-start" }}
     >
-      <SearchBar
-        style={{ width: "80%", alignSelf: "center" }}
-        dispatch={dispatch}
-      />
-      <NewsList state={state} />
+      <SearchBar style={{ width: "80%", alignSelf: "center" }} />
+      <NewsList />
     </View>
   );
 };

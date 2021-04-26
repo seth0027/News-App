@@ -5,25 +5,35 @@ import { NewsResponse } from "../models/NewsResponse";
 import {
   Action,
   ActionType,
+  SearchScreenContext,
 } from "../screens/searchscreen/SearchScreenContext";
 import { Ionicons } from "@expo/vector-icons";
-import { useFetch } from "./useFetch";
 
-export const SearchBar = ({
-  style,
-  dispatch,
-}: {
-  style?: StyleProp<ViewStyle>;
-  dispatch?: React.Dispatch<Action>;
-}) => {
+export const SearchBar = ({ style }: { style?: StyleProp<ViewStyle> }) => {
   const [text, setText] = React.useState("");
+  const { dispatch } = React.useContext(SearchScreenContext);
 
-  useFetch({
-    text,
-    dispatch,
-    endPoint: "everything",
-    queryParams: `?q=${text}`,
-  });
+  React.useEffect(() => {
+    const { cancel, token } = axios.CancelToken.source();
+    const timeOut =
+      text.length > 0
+        ? setTimeout(() => {
+            dispatch?.({
+              type: ActionType.FETCH_DATA,
+              payload: {
+                endPoint: "everything",
+                queryParams: `?q=${text}`,
+                token,
+              },
+            });
+          }, 1000)
+        : undefined;
+
+    return () => {
+      cancel();
+      timeOut && clearTimeout(timeOut);
+    };
+  }, [text]);
 
   return (
     <View style={[{ flexDirection: "row", margin: 20 }, style]}>

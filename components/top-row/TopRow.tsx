@@ -19,7 +19,6 @@ export const TopRow = ({
   const ref = React.useRef<FlatList<any>>(null);
 
   React.useEffect(() => {
-    console.log(index, "changed");
     ref.current?.scrollToIndex({ animated: true, index });
   }, [index]);
   return (

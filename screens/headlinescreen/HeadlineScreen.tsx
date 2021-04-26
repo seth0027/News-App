@@ -2,16 +2,19 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { Button, View, Platform, Text } from "react-native";
 
-import { NewsList } from "../../components/NewsList";
-import { useFetch } from "../../components/useFetch";
-
-import { NewsState, reducer } from "../searchscreen/SearchScreenContext";
+import {
+  ActionType,
+  NewsState,
+  reducer,
+  SearchScreenContext,
+} from "../searchscreen/SearchScreenContext";
 import { HeadlineStackParamList } from "./HeadlineStackScreen";
 import PagerView from "react-native-pager-view";
 import { HeadlineView } from "../../components/HeadlineView";
 import { capitalize } from "../../utils/strings";
 import { ScrollView } from "react-native-gesture-handler";
 import { TopRow } from "../../components/top-row/TopRow";
+import axios from "axios";
 
 type HeadlineProps = {
   navigation: StackNavigationProp<HeadlineStackParamList, "Headline">;
@@ -27,16 +30,24 @@ export const newsCategories = [
   "technology",
 ];
 
-const HeadlineScreen = ({ navigation }: HeadlineProps) => {
-  const [state, dispatch] = React.useReducer(reducer, {});
+const HeadlineScreen = ({}: HeadlineProps) => {
+  const { dispatch } = React.useContext(SearchScreenContext);
   const [index, setIndex] = React.useState(0);
 
-  useFetch({
-    dispatch,
-    endPoint: "top-headlines",
-    queryParams: `?country=us&category=${newsCategories[index]}`,
-    pageIndex: index,
-  });
+  React.useEffect(() => {
+    const { cancel, token } = axios.CancelToken.source();
+    dispatch?.({
+      type: ActionType.FETCH_DATA,
+      payload: {
+        endPoint: "top-headlines",
+        queryParams: `?country=us&category=${newsCategories[index]}`,
+        token,
+      },
+    });
+    return () => {
+      cancel();
+    };
+  }, [index]);
 
   return (
     <View style={{ flex: 1, justifyContent: "flex-end" }}>
@@ -48,12 +59,9 @@ const HeadlineScreen = ({ navigation }: HeadlineProps) => {
           setIndex(event.nativeEvent.position);
         }}
       >
-        {newsCategories.map((_category,position) => (
+        {newsCategories.map((_category, position) => (
           <View key={position}>
-            <HeadlineView
-              state={state}
-              category={capitalize(newsCategories[index])}
-            />
+            <HeadlineView category={capitalize(newsCategories[index])} />
           </View>
         ))}
       </PagerView>
