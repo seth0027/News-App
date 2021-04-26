@@ -28,6 +28,7 @@ export type Action = {
     searchQuery?: string;
     token?: CancelToken;
     categoryIndex?: number;
+    routeName?: string;
   };
 };
 
@@ -39,6 +40,7 @@ export enum ActionType {
   FETCH_DATA_HEADLINE,
   SEARCH_CHANGE,
   CATEGORY_INDEX_CHANGE,
+  REFRESH,
 }
 
 export const reducer = (state: NewsState, action: Action): NewsState => {
@@ -101,6 +103,26 @@ export const SearchScreenProvider = ({ children }: SearchProviderProps) => {
           cancelToken: action.payload?.token,
           dispatch,
         });
+        break;
+      }
+      case ActionType.REFRESH: {
+        const route = action.payload?.routeName;
+        switch (route) {
+          case "Search":
+          case "Headline": {
+            customDispatch({
+              type:
+                route === "Search"
+                  ? ActionType.FETCH_DATA_SEARCH
+                  : ActionType.FETCH_DATA_HEADLINE,
+
+              payload: {
+                searchQuery: action.payload?.searchQuery,
+                categoryIndex: action.payload?.categoryIndex,
+              },
+            });
+          }
+        }
         break;
       }
 

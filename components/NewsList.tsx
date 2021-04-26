@@ -1,12 +1,14 @@
 import { useRoute } from "@react-navigation/core";
 import React from "react";
-import { ActivityIndicator, Platform, Text, View } from "react-native";
+import { ActivityIndicator, Button, Platform, Text, View } from "react-native";
 import {
+  ActionType,
   NewsState,
   SearchScreenContext,
 } from "../screens/searchscreen/SearchScreenContext";
 import { ArticleList } from "./ArticleList";
 import { AntDesign } from "@expo/vector-icons";
+import { Error } from "./Error";
 
 export const NewsList = () => {
   const { state } = React.useContext(SearchScreenContext);
@@ -22,7 +24,7 @@ export const NewsList = () => {
       ) : (
         <ArticleList />
       )}
-      {route.name === "Search" && (
+      {route.name === "Search" && !state.isLoading && !state.newsResponse && (
         <Text
           style={{
             margin: 15,
@@ -36,18 +38,7 @@ export const NewsList = () => {
         </Text>
       )}
 
-      {state.errorMessage && (
-        <Text
-          style={{
-            color: "red",
-            margin: 20,
-            alignSelf: "center",
-            fontSize: 15,
-          }}
-        >
-          {state.errorMessage}
-        </Text>
-      )}
+      {state.errorMessage && <Error />}
     </View>
   );
 };
