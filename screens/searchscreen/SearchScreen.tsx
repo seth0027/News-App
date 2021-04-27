@@ -3,7 +3,7 @@ import React from "react";
 import { View } from "react-native";
 import { SearchStackParamList } from "./SearchStackScreen";
 
-import { SearchScreenContext } from "./SearchScreenContext";
+import { AppContext } from "../../context/AppContext";
 
 import { NewsList } from "../../components/NewsList";
 import { SearchBar } from "../../components/SearchBar";

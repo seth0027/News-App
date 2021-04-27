@@ -2,12 +2,12 @@ import React from "react";
 import { TouchableOpacity, Text } from "react-native";
 import {
   ActionType,
-  SearchScreenContext,
-} from "../../screens/searchscreen/SearchScreenContext";
+  AppContext,
+} from "../../context/AppContext";
 import { capitalize } from "../../utils/strings";
 
 export const Row = ({ position, item }: { position: number; item: string }) => {
-  const { state, dispatch } = React.useContext(SearchScreenContext);
+  const { state, dispatch } = React.useContext(AppContext);
   const bool = state.categoryIndex == position;
   return (
     <TouchableOpacity

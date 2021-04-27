@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SearchScreen from "./SearchScreen";
-import { SearchScreenProvider } from "./SearchScreenContext";
+import { AppProvider } from "../../context/AppContext";
 import { HeadlineText } from "../../components/HeadlineText";
 
 export type SearchStackParamList = {
@@ -10,7 +10,7 @@ export type SearchStackParamList = {
 const SearchStack = createStackNavigator<SearchStackParamList>();
 
 const SearchStackScreen = () => (
-  <SearchScreenProvider>
+  <AppProvider>
     <SearchStack.Navigator>
       <SearchStack.Screen
         name="Search"
@@ -20,7 +20,7 @@ const SearchStackScreen = () => (
         })}
       />
     </SearchStack.Navigator>
-  </SearchScreenProvider>
+  </AppProvider>
 );
 
 export default SearchStackScreen;

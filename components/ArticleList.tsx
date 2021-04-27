@@ -7,8 +7,8 @@ import { newsCategories } from "../screens/headlinescreen/HeadlineScreen";
 import { HeadlineStackParamList } from "../screens/headlinescreen/HeadlineStackScreen";
 import {
   ActionType,
-  SearchScreenContext,
-} from "../screens/searchscreen/SearchScreenContext";
+  AppContext,
+} from "../context/AppContext";
 import { SearchStackParamList } from "../screens/searchscreen/SearchStackScreen";
 import { capitalize } from "../utils/strings";
 import { ArticleRow } from "./ArticleRow";
@@ -20,7 +20,7 @@ const renderArticle: ListRenderItem<Article> = ({ item }) => (
 
 export const ArticleList = () => {
   const route = useRoute();
-  const { state, dispatch } = React.useContext(SearchScreenContext);
+  const { state, dispatch } = React.useContext(AppContext);
   return (
     <View>
       <FlatList

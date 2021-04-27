@@ -5,12 +5,12 @@ import { NewsResponse } from "../models/NewsResponse";
 import {
   Action,
   ActionType,
-  SearchScreenContext,
-} from "../screens/searchscreen/SearchScreenContext";
+  AppContext,
+} from "../context/AppContext";
 import { Ionicons } from "@expo/vector-icons";
 
 export const SearchBar = ({ style }: { style?: StyleProp<ViewStyle> }) => {
-  const { state, dispatch } = React.useContext(SearchScreenContext);
+  const { state, dispatch } = React.useContext(AppContext);
 
   React.useEffect(() => {
     const search = state.searchQuery;

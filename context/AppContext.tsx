@@ -1,9 +1,9 @@
 import axios, { CancelToken } from "axios";
 import React from "react";
-import { NewsResponse } from "../../models/NewsResponse";
-import { news } from "../../news";
-import { fetchData } from "../../utils/api";
-import { newsCategories } from "../headlinescreen/HeadlineScreen";
+import { NewsResponse } from "../models/NewsResponse";
+import { news } from "../news";
+import { fetchData } from "../utils/api";
+import { newsCategories } from "../screens/headlinescreen/HeadlineScreen";
 
 export type NewsState = {
   isLoading?: boolean;
@@ -15,7 +15,7 @@ export type NewsState = {
 
 const initialState: NewsState = {};
 
-export const SearchScreenContext = React.createContext<{
+export const AppContext = React.createContext<{
   state: NewsState;
   dispatch?: (action: Action) => void;
 }>({ state: initialState });
@@ -76,11 +76,11 @@ export const reducer = (state: NewsState, action: Action): NewsState => {
   }
 };
 
-type SearchProviderProps = {
+type AppProviderProps = {
   children: React.ReactNode;
 };
 const PAGE_SIZE = 10;
-export const SearchScreenProvider = ({ children }: SearchProviderProps) => {
+export const AppProvider = ({ children }: AppProviderProps) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   const customDispatch = React.useCallback(async (action: Action) => {
@@ -132,8 +132,8 @@ export const SearchScreenProvider = ({ children }: SearchProviderProps) => {
   }, []);
 
   return (
-    <SearchScreenContext.Provider value={{ state, dispatch: customDispatch }}>
+    <AppContext.Provider value={{ state, dispatch: customDispatch }}>
       {children}
-    </SearchScreenContext.Provider>
+    </AppContext.Provider>
   );
 };

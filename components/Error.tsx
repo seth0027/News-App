@@ -4,11 +4,11 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/core";
 import {
   ActionType,
-  SearchScreenContext,
-} from "../screens/searchscreen/SearchScreenContext";
+  AppContext,
+} from "../context/AppContext";
 
 export const Error = () => {
-  const { state, dispatch } = React.useContext(SearchScreenContext);
+  const { state, dispatch } = React.useContext(AppContext);
   const route = useRoute();
   return (
     <View>

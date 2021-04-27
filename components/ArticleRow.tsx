@@ -27,9 +27,21 @@ export const ArticleRow = ({ item }: ArticleRowProps) => (
       }}
     />
     <View style={{ margin: 10 }}>
-      <Text style={{ fontSize: 20 }}>{item.title}</Text>
-      <Text>{item.description}</Text>
-      <Text>{item.author}</Text>
+      <Text style={{ fontSize: 22, fontWeight: "700" }}>{item.title}</Text>
+      <Text style={{ fontSize: 18 }}>{item.description}</Text>
+      <View
+        style={{
+          marginTop: 4,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+        }}
+      >
+        <Text style={{ fontSize: 16, fontStyle: "italic" }}>{item.author}</Text>
+        <Text style={{ fontSize: 16, fontStyle: "italic" }}>
+          {item.publishedAt}
+        </Text>
+      </View>
     </View>
   </View>
 );

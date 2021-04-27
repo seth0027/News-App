@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HeadlineScreen from "./HeadlineScreen";
-import { SearchScreenProvider } from "../searchscreen/SearchScreenContext";
+import { AppProvider } from "../../context/AppContext";
 import { HeadlineText } from "../../components/HeadlineText";
 
 export type HeadlineStackParamList = {
@@ -12,7 +12,7 @@ export type HeadlineStackParamList = {
 const HeadlineStack = createStackNavigator<HeadlineStackParamList>();
 
 const HeadlineStackScreen = () => (
-  <SearchScreenProvider>
+  <AppProvider>
     <HeadlineStack.Navigator>
       <HeadlineStack.Screen
         name="Headline"
@@ -22,7 +22,7 @@ const HeadlineStackScreen = () => (
         })}
       />
     </HeadlineStack.Navigator>
-  </SearchScreenProvider>
+  </AppProvider>
 );
 
 export default HeadlineStackScreen;

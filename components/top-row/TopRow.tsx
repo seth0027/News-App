@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import { newsCategories } from "../../screens/headlinescreen/HeadlineScreen";
-import { SearchScreenContext } from "../../screens/searchscreen/SearchScreenContext";
+import { AppContext } from "../../context/AppContext";
 import { capitalize } from "../../utils/strings";
 import { Row } from "./Row";
 
 export const TopRow = () => {
   const ref = React.useRef<FlatList<any>>(null);
-  const { state } = React.useContext(SearchScreenContext);
+  const { state } = React.useContext(AppContext);
 
   React.useEffect(() => {
     ref.current?.scrollToIndex({

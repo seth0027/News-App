@@ -4,7 +4,7 @@ import { NewsResponse } from "../models/NewsResponse";
 import {
   Action,
   ActionType,
-} from "../screens/searchscreen/SearchScreenContext";
+} from "../context/AppContext";
 
 const PAGE_SIZE = 10;
 export const fetchData = async ({

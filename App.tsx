@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SearchStackScreen from "./screens/searchscreen/SearchStackScreen";
 import HeadlineStackScreen from "./screens/headlinescreen/HeadlineStackScreen";
 import { AppearanceProvider } from "react-native-appearance";
+import { AppProvider } from "./context/AppContext";
 
 type AppTabParamList = {
   SearchStack: undefined;

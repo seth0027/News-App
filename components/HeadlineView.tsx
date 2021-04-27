@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text } from "react-native";
 import {
   NewsState,
-  SearchScreenContext,
-} from "../screens/searchscreen/SearchScreenContext";
+  AppContext,
+} from "../context/AppContext";
 import { NewsList } from "./NewsList";
 
 export const HeadlineView = ({ category }: { category: string }) => {

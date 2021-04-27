@@ -6,8 +6,8 @@ import {
   ActionType,
   NewsState,
   reducer,
-  SearchScreenContext,
-} from "../searchscreen/SearchScreenContext";
+  AppContext,
+} from "../../context/AppContext";
 import { HeadlineStackParamList } from "./HeadlineStackScreen";
 import PagerView from "react-native-pager-view";
 import { HeadlineView } from "../../components/HeadlineView";
@@ -31,7 +31,7 @@ export const newsCategories = [
 ];
 
 const HeadlineScreen = ({}: HeadlineProps) => {
-  const { state, dispatch } = React.useContext(SearchScreenContext);
+  const { state, dispatch } = React.useContext(AppContext);
 
   React.useEffect(() => {
     const { cancel, token } = axios.CancelToken.source();
