@@ -11,10 +11,6 @@ export const Details = () => {
 
   const uri = route.params?.url ?? "https://google.com";
   return (
-    <WebView
-      scrollEnabled
-      source={{ uri }}
-      containerStyle={{ flex: 1 }}
-    />
+    <WebView scrollEnabled source={{ uri }} containerStyle={{ flex: 1 }} />
   );
 };
