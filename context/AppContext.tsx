@@ -1,5 +1,6 @@
 import axios, { CancelToken } from "axios";
 import React from "react";
+import { apiCountries } from "../data/api_countries";
 import { NewsResponse } from "../models/NewsResponse";
 import { news } from "../news";
 import { fetchData } from "../utils/api";
@@ -25,62 +26,7 @@ export const newsCategories = [
 ];
 
 export const sortBy = ["relevancy", "popularity", "publishedAt"];
-export const countryCodes = [
-  "ae",
-  "ar",
-  "at",
-  "au",
-  "be",
-  "bg",
-  "br",
-  "ca",
-  "ch",
-  "cn",
-  "co",
-  "cu",
-  "cz",
-  "de",
-  "eg",
-  "fr",
-  "gb",
-  "gr",
-  "hk",
-  "hu",
-  "id",
-  "ie",
-  "il",
-  "in",
-  "it",
-  "jp",
-  "kr",
-  "lt",
-  "lv",
-  "ma",
-  "mx",
-  "my",
-  "ng",
-  "nl",
-  "no",
-  "nz",
-  "ph",
-  "pl",
-  "pt",
-  "ro",
-  "rs",
-  "ru",
-  "sa",
-  "se",
-  "sg",
-  "si",
-  "sk",
-  "th",
-  "tr",
-  "tw",
-  "ua",
-  "us",
-  "ve",
-  "za",
-];
+
 export enum DropdownType {
   SORT_BY,
   COUNTRY,
@@ -193,7 +139,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         fetchData({
           endPoint: "top-headlines",
           queryParams: `?country=${
-            countryCodes[action.payload?.dropDownIndex ?? 51]
+            apiCountries[action.payload?.dropDownIndex ?? 51].code
           }&category=${newsCategories[action.payload?.categoryIndex ?? 0]}`,
           cancelToken: action.payload?.token,
           dispatch,
@@ -214,6 +160,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
               payload: {
                 searchQuery: action.payload?.searchQuery,
                 categoryIndex: action.payload?.categoryIndex,
+                dropDownIndex: action.payload?.dropDownIndex,
               },
             });
           }

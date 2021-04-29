@@ -57,6 +57,7 @@ export const ArticleList = () => {
             }}
           />
         }
+        contentContainerStyle={{ paddingBottom: 100 }}
       />
     </View>
   );

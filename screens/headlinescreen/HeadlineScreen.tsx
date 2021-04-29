@@ -55,7 +55,10 @@ const HeadlineScreen = ({}: HeadlineProps) => {
               title="Country"
             />
           ) : (
-            <Dropdown type={DropdownType.COUNTRY} style={{height:100,width:100}} />
+            <Dropdown
+              type={DropdownType.COUNTRY}
+              style={{ height: 100, width: 160 }}
+            />
           )}
         </View>
       ),

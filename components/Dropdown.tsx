@@ -3,12 +3,12 @@ import { Picker } from "@react-native-picker/picker";
 import {
   ActionType,
   AppContext,
-  countryCodes,
   DropdownType,
   sortBy,
 } from "../context/AppContext";
 import { capitalize } from "../utils/strings";
 import { StyleProp, TextStyle } from "react-native";
+import { apiCountries } from "../data/api_countries";
 
 export const Dropdown = ({
   type,
@@ -29,7 +29,7 @@ export const Dropdown = ({
   const values = (() => {
     switch (type) {
       case DropdownType.COUNTRY:
-        return countryCodes.map((co) => co.toUpperCase());
+        return apiCountries.map((co) => co.name);
       case DropdownType.SORT_BY:
         return sortBy.map((val) => capitalize(val));
     }
@@ -37,7 +37,7 @@ export const Dropdown = ({
 
   return (
     <Picker
-      style={[style]}
+      style={[{ fontStyle: "italic", fontSize: 18 }, style]}
       selectedValue={value}
       onValueChange={(itemValue, itemIndex) => {
         if (itemValue !== value) {
@@ -54,7 +54,12 @@ export const Dropdown = ({
       }}
     >
       {values.map((value, index) => (
-        <Picker.Item key={value} label={value} value={index} />
+        <Picker.Item
+          key={value}
+          label={value}
+          value={index}
+          style={{ fontStyle: "italic", fontSize: 18 }}
+        />
       ))}
     </Picker>
   );

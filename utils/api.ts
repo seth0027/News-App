@@ -1,12 +1,9 @@
 import axios, { CancelToken } from "axios";
 import React from "react";
 import { NewsResponse } from "../models/NewsResponse";
-import {
-  Action,
-  ActionType,
-} from "../context/AppContext";
+import { Action, ActionType } from "../context/AppContext";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 100;
 export const fetchData = async ({
   endPoint,
   queryParams,
