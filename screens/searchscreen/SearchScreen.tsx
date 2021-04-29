@@ -1,13 +1,14 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { Button, View } from "react-native";
+import { Button, Platform, View } from "react-native";
 import { SearchStackParamList } from "./SearchStackScreen";
 
-import { AppContext } from "../../context/AppContext";
+import { AppContext, DropdownType } from "../../context/AppContext";
 
 import { NewsList } from "../../components/NewsList";
 import { SearchBar } from "../../components/SearchBar";
 import { useNavigation } from "@react-navigation/core";
+import { Dropdown } from "../../components/Dropdown";
 
 type SearchProps = {
   navigation: StackNavigationProp<SearchStackParamList, "Search">;
@@ -21,7 +22,19 @@ const SearchScreen = ({}: SearchProps) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button onPress={() => navigation.navigate("SortBy")} title="Sort By" />
+        <View style={{ marginEnd: 10 }}>
+          {Platform.OS === "ios" ? (
+            <Button
+              onPress={() => navigation.navigate("SortBy")}
+              title="Sort By"
+            />
+          ) : (
+            <Dropdown
+              type={DropdownType.SORT_BY}
+              style={{ height: 100, width: 155 }}
+            />
+          )}
+        </View>
       ),
     });
   }, [navigation]);

@@ -8,6 +8,7 @@ import {
   reducer,
   AppContext,
   newsCategories,
+  DropdownType,
 } from "../../context/AppContext";
 import { HeadlineStackParamList } from "./HeadlineStackScreen";
 import PagerView from "react-native-pager-view";
@@ -17,6 +18,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { TopRow } from "../../components/top-row/TopRow";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/core";
+import { Dropdown } from "../../components/Dropdown";
 
 type HeadlineProps = {
   navigation: StackNavigationProp<HeadlineStackParamList, "Headline">;
@@ -46,10 +48,16 @@ const HeadlineScreen = ({}: HeadlineProps) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button
-          onPress={() => navigation.navigate("Country")}
-          title="Country"
-        />
+        <View style={{ marginEnd: 10 }}>
+          {Platform.OS === "ios" ? (
+            <Button
+              onPress={() => navigation.navigate("Country")}
+              title="Country"
+            />
+          ) : (
+            <Dropdown type={DropdownType.COUNTRY} style={{height:100,width:100}} />
+          )}
+        </View>
       ),
     });
   }, [navigation]);

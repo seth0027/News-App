@@ -6,6 +6,7 @@ import { AppProvider, DropdownType } from "../../context/AppContext";
 import { HeadlineText } from "../../components/HeadlineText";
 import { Details } from "../../components/Details";
 import { Dropdown } from "../../components/Dropdown";
+import { Platform } from "react-native";
 
 export type HeadlineStackParamList = {
   Headline: undefined;
@@ -44,5 +45,16 @@ const HeadlineStackScreen = () => (
   </AppProvider>
 );
 
-const Country = () => <Dropdown type={DropdownType.COUNTRY} />;
+const Country = () => (
+  <Dropdown
+    type={DropdownType.COUNTRY}
+    style={
+      Platform.OS === "android" && {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }
+    }
+  />
+);
 export default HeadlineStackScreen;
