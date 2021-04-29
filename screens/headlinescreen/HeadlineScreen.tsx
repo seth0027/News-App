@@ -7,6 +7,7 @@ import {
   NewsState,
   reducer,
   AppContext,
+  newsCategories,
 } from "../../context/AppContext";
 import { HeadlineStackParamList } from "./HeadlineStackScreen";
 import PagerView from "react-native-pager-view";
@@ -15,29 +16,24 @@ import { capitalize } from "../../utils/strings";
 import { ScrollView } from "react-native-gesture-handler";
 import { TopRow } from "../../components/top-row/TopRow";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/core";
 
 type HeadlineProps = {
   navigation: StackNavigationProp<HeadlineStackParamList, "Headline">;
 };
 
-export const newsCategories = [
-  "general",
-  "business",
-  "entertainment",
-  "health",
-  "science",
-  "sports",
-  "technology",
-];
-
 const HeadlineScreen = ({}: HeadlineProps) => {
   const { state, dispatch } = React.useContext(AppContext);
+  const navigation = useNavigation<
+    StackNavigationProp<HeadlineStackParamList, "Headline">
+  >();
 
   React.useEffect(() => {
     const { cancel, token } = axios.CancelToken.source();
     dispatch?.({
       type: ActionType.FETCH_DATA_HEADLINE,
       payload: {
+        dropDownIndex: state.countryIndex,
         categoryIndex: state.categoryIndex,
         token,
       },
@@ -46,6 +42,17 @@ const HeadlineScreen = ({}: HeadlineProps) => {
       cancel();
     };
   }, [state.categoryIndex]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          onPress={() => navigation.navigate("Country")}
+          title="Country"
+        />
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={{ flex: 1, justifyContent: "flex-end" }}>

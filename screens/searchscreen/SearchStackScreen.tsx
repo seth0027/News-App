@@ -1,13 +1,15 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SearchScreen from "./SearchScreen";
-import { AppProvider } from "../../context/AppContext";
+import { AppProvider, DropdownType } from "../../context/AppContext";
 import { HeadlineText } from "../../components/HeadlineText";
 import { Details } from "../../components/Details";
+import { Dropdown } from "../../components/Dropdown";
 
 export type SearchStackParamList = {
   Search: undefined;
   Details: { url?: string };
+  SortBy: undefined;
 };
 const SearchStack = createStackNavigator<SearchStackParamList>();
 
@@ -18,19 +20,29 @@ const SearchStackScreen = () => (
         name="Search"
         component={SearchScreen}
         options={({ route, navigation }) => ({
-          headerTitle: (props) => <HeadlineText title="Search Screen" />,
+          headerTitle: (props) => <HeadlineText title="Search" />,
         })}
       />
       <SearchStack.Screen
         name="Details"
         component={Details}
         options={({ route, navigation }) => ({
-          headerTitle: (props) => <HeadlineText title="Details Screen" />,
+          headerTitle: (props) => <HeadlineText title="Details" />,
         })}
         initialParams={{ url: undefined }}
+      />
+
+      <SearchStack.Screen
+        name="SortBy"
+        component={SortBy}
+        options={({ route, navigation }) => ({
+          headerTitle: (props) => <HeadlineText title="Sort By" />,
+        })}
       />
     </SearchStack.Navigator>
   </AppProvider>
 );
+
+const SortBy = () => <Dropdown type={DropdownType.SORT_BY} />;
 
 export default SearchStackScreen;

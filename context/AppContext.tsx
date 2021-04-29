@@ -3,7 +3,6 @@ import React from "react";
 import { NewsResponse } from "../models/NewsResponse";
 import { news } from "../news";
 import { fetchData } from "../utils/api";
-import { newsCategories } from "../screens/headlinescreen/HeadlineScreen";
 
 export type NewsState = {
   isLoading?: boolean;
@@ -11,9 +10,82 @@ export type NewsState = {
   newsResponse?: NewsResponse;
   searchQuery?: string;
   categoryIndex?: number;
+  sortByIndex?: number;
+  countryIndex?: number;
 };
 
-const initialState: NewsState = {};
+export const newsCategories = [
+  "general",
+  "business",
+  "entertainment",
+  "health",
+  "science",
+  "sports",
+  "technology",
+];
+
+export const sortBy = ["relevancy", "popularity", "publishedAt"];
+export const countryCodes = [
+  "ae",
+  "ar",
+  "at",
+  "au",
+  "be",
+  "bg",
+  "br",
+  "ca",
+  "ch",
+  "cn",
+  "co",
+  "cu",
+  "cz",
+  "de",
+  "eg",
+  "fr",
+  "gb",
+  "gr",
+  "hk",
+  "hu",
+  "id",
+  "ie",
+  "il",
+  "in",
+  "it",
+  "jp",
+  "kr",
+  "lt",
+  "lv",
+  "ma",
+  "mx",
+  "my",
+  "ng",
+  "nl",
+  "no",
+  "nz",
+  "ph",
+  "pl",
+  "pt",
+  "ro",
+  "rs",
+  "ru",
+  "sa",
+  "se",
+  "sg",
+  "si",
+  "sk",
+  "th",
+  "tr",
+  "tw",
+  "ua",
+  "us",
+  "ve",
+  "za",
+];
+export enum DropdownType {
+  SORT_BY,
+  COUNTRY,
+}
+const initialState: NewsState = { sortByIndex: 2, countryIndex: 51 };
 
 export const AppContext = React.createContext<{
   state: NewsState;
@@ -29,6 +101,8 @@ export type Action = {
     token?: CancelToken;
     categoryIndex?: number;
     routeName?: string;
+    dropdownType?: DropdownType;
+    dropDownIndex?: number;
   };
 };
 
@@ -41,6 +115,9 @@ export enum ActionType {
   SEARCH_CHANGE,
   CATEGORY_INDEX_CHANGE,
   REFRESH,
+  DROP_DOWN_SELECTED,
+  DROP_DOWN_COUNTRY_CHANGE,
+  DROP_DOWN_SORT_CHANGE,
 }
 
 export const reducer = (state: NewsState, action: Action): NewsState => {
@@ -71,6 +148,19 @@ export const reducer = (state: NewsState, action: Action): NewsState => {
         ...state,
         categoryIndex: action.payload?.categoryIndex,
       };
+
+    case ActionType.DROP_DOWN_COUNTRY_CHANGE:
+      return {
+        ...state,
+        countryIndex: action.payload?.dropDownIndex,
+      };
+
+    case ActionType.DROP_DOWN_SORT_CHANGE: {
+      return {
+        ...state,
+        sortByIndex: action.payload?.dropDownIndex,
+      };
+    }
     default:
       return state;
   }
@@ -86,9 +176,14 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const customDispatch = React.useCallback(async (action: Action) => {
     switch (action.type) {
       case ActionType.FETCH_DATA_SEARCH: {
+        if (action.payload?.searchQuery === undefined) {
+          break;
+        }
         fetchData({
           endPoint: "everything",
-          queryParams: `?q=${action.payload?.searchQuery}`,
+          queryParams: `?q=${action.payload?.searchQuery}&sortBy=${
+            sortBy[action.payload?.dropDownIndex ?? 2]
+          }`,
           cancelToken: action.payload?.token,
           dispatch,
         });
@@ -97,9 +192,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       case ActionType.FETCH_DATA_HEADLINE: {
         fetchData({
           endPoint: "top-headlines",
-          queryParams: `?country=us&category=${
-            newsCategories[action.payload?.categoryIndex ?? 0]
-          }`,
+          queryParams: `?country=${
+            countryCodes[action.payload?.dropDownIndex ?? 51]
+          }&category=${newsCategories[action.payload?.categoryIndex ?? 0]}`,
           cancelToken: action.payload?.token,
           dispatch,
         });
@@ -123,6 +218,37 @@ export const AppProvider = ({ children }: AppProviderProps) => {
             });
           }
         }
+        break;
+      }
+
+      case ActionType.DROP_DOWN_SELECTED: {
+        const dType = action.payload?.dropdownType;
+        const ddIndex = action.payload?.dropDownIndex;
+        if (dType === undefined) {
+          break;
+        }
+        dispatch({
+          type:
+            dType === DropdownType.COUNTRY
+              ? ActionType.DROP_DOWN_COUNTRY_CHANGE
+              : ActionType.DROP_DOWN_SORT_CHANGE,
+          payload: {
+            dropDownIndex: ddIndex,
+          },
+        });
+
+        customDispatch({
+          type:
+            dType === DropdownType.COUNTRY
+              ? ActionType.FETCH_DATA_HEADLINE
+              : ActionType.FETCH_DATA_SEARCH,
+          payload: {
+            searchQuery: action.payload?.searchQuery,
+            categoryIndex: action.payload?.categoryIndex,
+            dropDownIndex: ddIndex,
+          },
+        });
+
         break;
       }
 

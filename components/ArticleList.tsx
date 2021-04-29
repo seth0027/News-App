@@ -3,12 +3,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { FlatList, ListRenderItem, RefreshControl, View } from "react-native";
 import { Article } from "../models/NewsResponse";
-import { newsCategories } from "../screens/headlinescreen/HeadlineScreen";
+
 import { HeadlineStackParamList } from "../screens/headlinescreen/HeadlineStackScreen";
-import {
-  ActionType,
-  AppContext,
-} from "../context/AppContext";
+import { ActionType, AppContext, newsCategories } from "../context/AppContext";
 import { SearchStackParamList } from "../screens/searchscreen/SearchStackScreen";
 import { capitalize } from "../utils/strings";
 import { ArticleRow } from "./ArticleRow";
@@ -51,6 +48,10 @@ export const ArticleList = () => {
                   routeName: route.name,
                   searchQuery: state.searchQuery,
                   categoryIndex: state.categoryIndex,
+                  dropDownIndex:
+                    route.name === "Search"
+                      ? state.sortByIndex
+                      : state.countryIndex,
                 },
               });
             }}

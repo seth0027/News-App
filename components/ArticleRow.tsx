@@ -4,6 +4,9 @@ import { View, Image, Text, TouchableHighlight, Share } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Article } from "../models/NewsResponse";
 import { AntDesign } from "@expo/vector-icons";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { SearchStackParamList } from "../screens/searchscreen/SearchStackScreen";
+import { HeadlineStackParamList } from "../screens/headlinescreen/HeadlineStackScreen";
 
 type ArticleRowProps = {
   item: Article;
@@ -20,7 +23,12 @@ export const ArticleRow = ({ item }: ArticleRowProps) => {
       alert(err?.message);
     }
   };
-  const navigation = useNavigation();
+  const navigation = useNavigation<
+    StackNavigationProp<
+      SearchStackParamList | HeadlineStackParamList,
+      "Details"
+    >
+  >();
   return (
     <View
       style={{

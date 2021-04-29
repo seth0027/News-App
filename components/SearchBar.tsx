@@ -6,8 +6,11 @@ import {
   Action,
   ActionType,
   AppContext,
+  DropdownType,
 } from "../context/AppContext";
 import { Ionicons } from "@expo/vector-icons";
+import { Dropdown } from "./Dropdown";
+import { Picker } from "@react-native-picker/picker";
 
 export const SearchBar = ({ style }: { style?: StyleProp<ViewStyle> }) => {
   const { state, dispatch } = React.useContext(AppContext);
@@ -15,18 +18,18 @@ export const SearchBar = ({ style }: { style?: StyleProp<ViewStyle> }) => {
   React.useEffect(() => {
     const search = state.searchQuery;
     const { cancel, token } = axios.CancelToken.source();
-    const timeOut =
-      search && search?.length > 0
-        ? setTimeout(() => {
-            dispatch?.({
-              type: ActionType.FETCH_DATA_SEARCH,
-              payload: {
-                searchQuery: state.searchQuery,
-                token,
-              },
-            });
-          }, 1000)
-        : undefined;
+    const timeOut = search
+      ? setTimeout(() => {
+          dispatch?.({
+            type: ActionType.FETCH_DATA_SEARCH,
+            payload: {
+              dropDownIndex: state.sortByIndex,
+              searchQuery: state.searchQuery,
+              token,
+            },
+          });
+        }, 1000)
+      : undefined;
 
     return () => {
       cancel();
