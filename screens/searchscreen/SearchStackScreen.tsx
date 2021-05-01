@@ -6,10 +6,11 @@ import { HeadlineText } from "../../components/HeadlineText";
 import { Details } from "../../components/Details";
 import { Dropdown } from "../../components/Dropdown";
 import { Platform } from "react-native";
+import { Article } from "../../models/NewsResponse";
 
 export type SearchStackParamList = {
   Search: undefined;
-  Details: { url?: string };
+  Details: { article: Article };
   SortBy: undefined;
 };
 const SearchStack = createStackNavigator<SearchStackParamList>();
@@ -30,7 +31,6 @@ const SearchStackScreen = () => (
         options={({ route, navigation }) => ({
           headerTitle: (props) => <HeadlineText title="Details" />,
         })}
-        initialParams={{ url: undefined }}
       />
 
       <SearchStack.Screen

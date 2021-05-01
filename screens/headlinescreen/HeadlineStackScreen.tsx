@@ -7,10 +7,11 @@ import { HeadlineText } from "../../components/HeadlineText";
 import { Details } from "../../components/Details";
 import { Dropdown } from "../../components/Dropdown";
 import { Platform } from "react-native";
+import { Article } from "../../models/NewsResponse";
 
 export type HeadlineStackParamList = {
   Headline: undefined;
-  Details: { url?: string };
+  Details: { article: Article };
   Country: undefined;
 };
 
@@ -32,7 +33,6 @@ const HeadlineStackScreen = () => (
         options={({ route, navigation }) => ({
           headerTitle: (props) => <HeadlineText title="Details" />,
         })}
-        initialParams={{ url: undefined }}
       />
       <HeadlineStack.Screen
         name="Country"

@@ -1,28 +1,20 @@
 import { useNavigation } from "@react-navigation/core";
 import React from "react";
-import { View, Image, Text, TouchableHighlight, Share } from "react-native";
+import { View, Image, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Article } from "../models/NewsResponse";
-import { AntDesign } from "@expo/vector-icons";
+
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SearchStackParamList } from "../screens/searchscreen/SearchStackScreen";
 import { HeadlineStackParamList } from "../screens/headlinescreen/HeadlineStackScreen";
+import { onShare } from "../utils/share";
+import { ShareIcon } from "./ShareIcon";
 
 type ArticleRowProps = {
   item: Article;
 };
+
 export const ArticleRow = ({ item }: ArticleRowProps) => {
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message: item.url ?? "",
-        url: item.url ?? "",
-        title: item.title,
-      });
-    } catch (err) {
-      alert(err?.message);
-    }
-  };
   const navigation = useNavigation<
     StackNavigationProp<
       SearchStackParamList | HeadlineStackParamList,
@@ -56,7 +48,7 @@ export const ArticleRow = ({ item }: ArticleRowProps) => {
             onPress={() => {
               console.log(item.url);
               navigation.navigate("Details", {
-                url: item.url,
+                article: item,
               });
             }}
           >
@@ -79,14 +71,11 @@ export const ArticleRow = ({ item }: ArticleRowProps) => {
             <Text style={{ fontSize: 16, fontStyle: "italic", color: "grey" }}>
               {item.publishedAt && new Date(item.publishedAt).toDateString()}
             </Text>
-            <TouchableOpacity onPress={onShare}>
-              <AntDesign
-                name="sharealt"
-                size={22}
-                color="dimgray"
-                style={{ alignSelf: "center" }}
-              />
-            </TouchableOpacity>
+            <ShareIcon
+              onPress={() => {
+                onShare(item);
+              }}
+            />
           </View>
         </View>
       </View>

@@ -26,6 +26,7 @@ type HeadlineProps = {
 
 const HeadlineScreen = ({}: HeadlineProps) => {
   const { state, dispatch } = React.useContext(AppContext);
+  const ref = React.useRef<PagerView>(null);
   const navigation = useNavigation<
     StackNavigationProp<HeadlineStackParamList, "Headline">
   >();
@@ -40,6 +41,7 @@ const HeadlineScreen = ({}: HeadlineProps) => {
         token,
       },
     });
+    state.categoryIndex && ref.current?.setPage(state.categoryIndex);
     return () => {
       cancel();
     };
@@ -69,7 +71,8 @@ const HeadlineScreen = ({}: HeadlineProps) => {
     <View style={{ flex: 1, justifyContent: "flex-end" }}>
       <TopRow />
       <PagerView
-        initialPage={state.categoryIndex}
+        ref={ref}
+        initialPage={0}
         style={{ flex: 1 }}
         onPageSelected={(event) => {
           dispatch?.({
